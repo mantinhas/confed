@@ -10,6 +10,7 @@ type TK_TYPE int
 const (
 	STRING TK_TYPE = iota
 	INT
+    FLOAT
 	EQUALS
 	KEYWORD
 	BOOL
@@ -93,6 +94,8 @@ func (s *Scanner) scanToken() {
 		//	Type:	EOF,
 		//	value:	nil,
 		//})
+    case unicode.IsDigit(rune(value)):
+        s.scanNumber()
 	case isValidCharForBareKey(value):
 		s.scanKeyword()
 	}
@@ -100,6 +103,35 @@ func (s *Scanner) scanToken() {
 
 func isValidCharForBareKey(value byte) bool {
 	return unicode.IsLetter(rune(value)) || value == '_' || value == '-' || unicode.IsDigit(rune(value))
+}
+
+func (s *Scanner) scanNumber() {
+    for unicode.IsDigit(rune(s.peek())) {
+        s.advance()
+    }
+
+    if s.peek() == '.' {
+        if !unicode.IsDigit(rune(s.peekNext())){
+            log.Fatalf("Expected digit after '.' at line %d:\t %s", s.line, s.source[s.start:])
+        }
+        s.advance() // Consume the '.'
+
+        for unicode.IsDigit(rune(s.peek())) {
+            s.advance()
+        }
+        s.Tokens = append(s.Tokens, Token{
+            Type:  FLOAT,
+            Value: s.source[s.start:s.current],
+            Line:  s.line,
+        })
+
+    } else {
+        s.Tokens = append(s.Tokens, Token{
+            Type:  INT,
+            Value: s.source[s.start:s.current],
+            Line:  s.line,
+        })
+    }
 }
 
 func (s *Scanner) scanKeyword() {

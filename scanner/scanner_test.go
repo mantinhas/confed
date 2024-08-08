@@ -111,6 +111,45 @@ func TestScannerBoolAttributionTokenValues(t *testing.T) {
 	}, s.Tokens[5])
 }
 
+func TestScannerNumberAttributionTokenValues(t *testing.T) {
+	testdata := readFile("testdata/number_attribution_test.toml")
+    s:= scanner.New(testdata)
+    s.Scan()
+
+    assert.Equal(t, 6, len(s.Tokens))
+
+	assert.Equal(t, scanner.Token{
+		Type:  scanner.KEYWORD,
+		Value: []byte("age"),
+		Line:  1,
+	}, s.Tokens[0])
+	assert.Equal(t, scanner.Token{
+		Type:  scanner.EQUALS,
+		Value: nil,
+		Line:  1,
+	}, s.Tokens[1])
+	assert.Equal(t, scanner.Token{
+		Type:  scanner.INT,
+		Value: []byte("16"),
+		Line:  1,
+	}, s.Tokens[2])
+	assert.Equal(t, scanner.Token{
+		Type:  scanner.KEYWORD,
+		Value: []byte("grade"),
+		Line:  2,
+	}, s.Tokens[3])
+	assert.Equal(t, scanner.Token{
+		Type:  scanner.EQUALS,
+		Value: nil,
+		Line:  2,
+	}, s.Tokens[4])
+	assert.Equal(t, scanner.Token{
+		Type:  scanner.FLOAT,
+		Value: []byte("20.170"),
+		Line:  2,
+	}, s.Tokens[5])
+}
+
 func readFile(filename string) []byte {
 	file, err := os.Open(filename)
 	if err != nil {
