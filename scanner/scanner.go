@@ -8,7 +8,8 @@ import (
 type TK_TYPE int
 
 const (
-	STRING TK_TYPE = iota
+	NONE TK_TYPE = iota
+    STRING
 	INT
     FLOAT
 	EQUALS
@@ -20,6 +21,19 @@ const (
 	LEFT_BRACE
 	RIGHT_BRACE
 )
+
+var TK_TYPE_NAMES = map[TK_TYPE]string{
+    STRING: "STRING",
+    INT: "INT",
+    FLOAT: "FLOAT",
+    EQUALS: "EQUALS",
+    KEYWORD: "KEYWORD",
+    BOOL: "BOOL",
+    LEFT_BRACKET: "LEFT_BRACKET",
+    RIGHT_BRACKET: "RIGHT_BRACKET",
+    LEFT_BRACE: "LEFT_BRACE",
+    RIGHT_BRACE: "RIGHT_BRACE",
+}
 
 type Token struct {
 	Type  TK_TYPE
@@ -39,7 +53,7 @@ type Scanner struct {
 //	IOSource io.Reader
 //}
 
-func New(sourceString []byte) *Scanner {
+func NewScanner(sourceString []byte) *Scanner {
 
 	//var stringFile []byte
 	//var err error

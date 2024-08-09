@@ -13,7 +13,7 @@ import (
 
 func TestScannerStringAttributionTokensTypes(t *testing.T) {
 	testdata := readFile("testdata/string_attribution_test.toml")
-	s := scanner.New(testdata)
+	s := scanner.NewScanner(testdata)
 
 	assert.Equal(t, 0, len(s.Tokens))
 	s.Scan()
@@ -33,7 +33,7 @@ func TestScannerStringAttributionTokensTypes(t *testing.T) {
 
 func TestScannerStringAttributionTokenValues(t *testing.T) {
 	testdata := readFile("testdata/string_attribution_test.toml")
-	s := scanner.New(testdata)
+	s := scanner.NewScanner(testdata)
 
 	s.Scan()
 
@@ -73,7 +73,7 @@ func TestScannerStringAttributionTokenValues(t *testing.T) {
 
 func TestScannerBoolAttributionTokenValues(t *testing.T) {
 	testdata := readFile("testdata/bool_attribution_test.toml")
-	s := scanner.New(testdata)
+	s := scanner.NewScanner(testdata)
 
 	s.Scan()
 
@@ -113,7 +113,7 @@ func TestScannerBoolAttributionTokenValues(t *testing.T) {
 
 func TestScannerNumberAttributionTokenValues(t *testing.T) {
 	testdata := readFile("testdata/number_attribution_test.toml")
-    s:= scanner.New(testdata)
+    s:= scanner.NewScanner(testdata)
     s.Scan()
 
     assert.Equal(t, 6, len(s.Tokens))
