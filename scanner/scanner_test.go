@@ -1,18 +1,16 @@
 package scanner_test
 
 import (
-	"io"
-	"log"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"github.com/mantinhas/confed/scanner"
+	"github.com/mantinhas/confed/utils"
 )
 
 func TestScannerStringAttributionTokensTypes(t *testing.T) {
-	testdata := readFile("testdata/string_attribution_test.toml")
+	testdata := utils.ReadFile("testdata/string_attribution_test.toml")
 	s := scanner.NewScanner(testdata)
 
 	assert.Equal(t, 0, len(s.Tokens))
@@ -32,7 +30,7 @@ func TestScannerStringAttributionTokensTypes(t *testing.T) {
 }
 
 func TestScannerStringAttributionTokenValues(t *testing.T) {
-	testdata := readFile("testdata/string_attribution_test.toml")
+	testdata := utils.ReadFile("testdata/string_attribution_test.toml")
 	s := scanner.NewScanner(testdata)
 
 	s.Scan()
@@ -72,7 +70,7 @@ func TestScannerStringAttributionTokenValues(t *testing.T) {
 }
 
 func TestScannerBoolAttributionTokenValues(t *testing.T) {
-	testdata := readFile("testdata/bool_attribution_test.toml")
+	testdata := utils.ReadFile("testdata/bool_attribution_test.toml")
 	s := scanner.NewScanner(testdata)
 
 	s.Scan()
@@ -112,11 +110,11 @@ func TestScannerBoolAttributionTokenValues(t *testing.T) {
 }
 
 func TestScannerNumberAttributionTokenValues(t *testing.T) {
-	testdata := readFile("testdata/number_attribution_test.toml")
-    s:= scanner.NewScanner(testdata)
-    s.Scan()
+	testdata := utils.ReadFile("testdata/number_attribution_test.toml")
+	s := scanner.NewScanner(testdata)
+	s.Scan()
 
-    assert.Equal(t, 6, len(s.Tokens))
+	assert.Equal(t, 6, len(s.Tokens))
 
 	assert.Equal(t, scanner.Token{
 		Type:  scanner.KEYWORD,
@@ -148,21 +146,6 @@ func TestScannerNumberAttributionTokenValues(t *testing.T) {
 		Value: []byte("20.170"),
 		Line:  2,
 	}, s.Tokens[5])
-}
-
-func readFile(filename string) []byte {
-	file, err := os.Open(filename)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	fileBytes, err := io.ReadAll(file)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return fileBytes
 }
 
 func getTokensType(tokens []scanner.Token) []scanner.TK_TYPE {

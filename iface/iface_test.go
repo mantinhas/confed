@@ -1,17 +1,16 @@
 package iface_test
 
 import (
-	"io"
-	"log"
-	"os"
 	"testing"
 
-	"github.com/mantinhas/confed/iface"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/mantinhas/confed/iface"
+	"github.com/mantinhas/confed/utils"
 )
 
 func TestGetStringAttributionTokensTypes(t *testing.T) {
-	testdata := readFile("../scanner/testdata/string_attribution_test.toml")
+	testdata := utils.ReadFile("../scanner/testdata/string_attribution_test.toml")
 
 	var value string
 	var ok bool
@@ -29,7 +28,7 @@ func TestGetStringAttributionTokensTypes(t *testing.T) {
 }
 
 func TestGetNumberAttributionTokensTypes(t *testing.T) {
-	testdata := readFile("../scanner/testdata/number_attribution_test.toml")
+	testdata := utils.ReadFile("../scanner/testdata/number_attribution_test.toml")
 
 	var value string
 	var ok bool
@@ -47,7 +46,7 @@ func TestGetNumberAttributionTokensTypes(t *testing.T) {
 }
 
 func TestGetBoolAttributionTokensTypes(t *testing.T) {
-	testdata := readFile("../scanner/testdata/bool_attribution_test.toml")
+	testdata := utils.ReadFile("../scanner/testdata/bool_attribution_test.toml")
 
 	var value string
 	var ok bool
@@ -62,19 +61,4 @@ func TestGetBoolAttributionTokensTypes(t *testing.T) {
 
 	_, ok = iface.Get("not-included", testdata)
 	assert.Equal(t, false, ok)
-}
-
-func readFile(filename string) []byte {
-	file, err := os.Open(filename)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	fileBytes, err := io.ReadAll(file)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return fileBytes
 }
