@@ -6,6 +6,9 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/mantinhas/confed/iface"
+	"github.com/mantinhas/confed/utils"
+
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +21,17 @@ var getCmd = &cobra.Command{
 Example:
 	confed get name`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("get called")
+		inputfile, _ := cmd.Flags().GetString("inputfile")
+
+		sourceBytes := utils.ReadFile(inputfile)
+
+		value, ok := iface.Get(args[0], sourceBytes)
+
+		if !ok {
+			fmt.Printf("error: key '%s' not found\n", args[0])
+		} else {
+			fmt.Println(value)
+		}
 	},
 }
 
